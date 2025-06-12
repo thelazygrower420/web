@@ -68,6 +68,42 @@ function initializeDropdowns() {
 // --- Component Initializers (Hero Slider, etc.) ---
 function initializeHeroSlider() { /* ... */ }
 
+function handleAgeGate() {
+    if (getCookie('age_verified') === 'true') {
+        return; // User is verified, do nothing.
+    }
+
+    const overlay = document.getElementById('age-gate-overlay');
+    const modal = document.querySelector('.age-gate-modal');
+    const yesButton = document.getElementById('age-gate-yes');
+    const noButton = document.getElementById('age-gate-no');
+
+    if (!overlay || !yesButton || !noButton) {
+        console.error("Age gate elements not found.");
+        return;
+    }
+
+    // Show the modal
+    document.body.classList.add('modal-open');
+    overlay.classList.add('is-visible');
+
+    yesButton.addEventListener('click', () => {
+        // Set a cookie for 10 years (a "silly number")
+        setCookie('age_verified', 'true', 3650);
+        // Hide the modal
+        overlay.classList.remove('is-visible');
+        document.body.classList.remove('modal-open');
+    });
+
+    noButton.addEventListener('click', () => {
+        // Change the content to a "sorry" message
+        modal.innerHTML = `
+            <h2>Access Denied</h2>
+            <p>You must be 21 years of age or older to view this content.</p>
+        `;
+        // We don't hide the overlay, so the user cannot access the site.
+    });
+}
 
 // --- INITIALIZE THEME IMMEDIATELY ---
 setInitialTheme();
@@ -75,7 +111,7 @@ setInitialTheme();
 
 // --- RUN AFTER DOM IS FULLY LOADED ---
 document.addEventListener('DOMContentLoaded', () => {
-    // handleAgeGate(); // Should be in utils.js or here
+    handleAgeGate();
 
     const navToggle = document.querySelector('.nav-toggle');
     const navLinksList = document.querySelector('.nav-links');
