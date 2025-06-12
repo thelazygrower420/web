@@ -1,0 +1,4 @@
+Go to a site like xml-sitemaps.com.
+Enter your full website URL.
+It will crawl your site and generate a sitemap.xml file for you.
+Download this file and place it in your root directory.
